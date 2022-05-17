@@ -36,3 +36,4 @@ while True:
     detectAndDisplay(frame)
     if cv.waitKey(1) & 0xFF == ord('q'):#program closes when q is pressed.
         break
+cv.destroyAllWindows()
