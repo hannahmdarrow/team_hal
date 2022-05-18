@@ -5,7 +5,11 @@ import keyboard
 
 baselineValue = (0,0,0,0)
 
-def detectAndDisplay(frame, baselineValue):
+def comparingBaseline():
+    
+
+
+def detectAndDisplay(frame, baselineValue):#main camera loop function
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     frame_gray = cv.equalizeHist(frame_gray)
     
@@ -18,7 +22,7 @@ def detectAndDisplay(frame, baselineValue):
         faceROI = frame_gray[y:y+h,x:x+w]
 
         try:  # used try so that if user pressed other than the given key error will not be shown
-            if keyboard.is_pressed('D'):  # if key 'q' is pressed 
+            if keyboard.is_pressed('D'):  # if key 'q' is pressed, capture baseline
                 print('Capturing Baseline Value')
                 baselineValue = (x,y,h,w)
                 print(baselineValue)
@@ -53,7 +57,6 @@ while True:
         print('--(!) No captured frame -- Break!')
         break
     _, baselineValue = detectAndDisplay(frame, baselineValue)
-    print(baselineValue)
     if cv.waitKey(1) & 0xFF == ord('q'):#program closes when q is pressed.
         break
 cv.destroyAllWindows()
