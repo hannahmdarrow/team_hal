@@ -13,25 +13,25 @@ def comparingBaseline(baselineValue, currentValue):
 
     upperHigh = 0 #establishing too far threshold
     upperLow = 0#too close threshold
-
+    baselineVal = 0
     currentVal = 0#what is coming live from the feed
-    baselineVal = 0#what was recorded earlier
-    baselineVal = float(baselineVal)
     
-    for x in currentValue:
-        upperHigh += x
-        upperLow += x
-        
-    for y in baselineValue:
-        baselineVal += y
+    for z in baselineValue:#turning baseline tuple into a numerical value
+        baselineVal += z
 
-    upperHigh += upperHigh*.2
-    upperLow -= upperLow*.2
-    if upperHigh != baselineVal:
-        if upperHigh < baselineVal:
-            print("Too FAR!!")
-        if upperLow > baselineVal:
-            print("TOO Close!!")
+    if baselineVal != 0:
+        for x in currentValue:
+            upperHigh += x
+            upperLow += x
+
+        upperHigh += upperHigh*.04
+        upperLow -= upperLow*.04
+    
+        if upperHigh != baselineVal:
+            if upperHigh < baselineVal:
+                print("Too FAR!!")
+            if upperLow > baselineVal:
+                print("TOO Close!!")
 
 
 def detectAndDisplay(frame, baselineValue, currentValue, face_cascade):#main camera loop function
