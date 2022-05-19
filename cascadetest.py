@@ -34,7 +34,7 @@ def comparingBaseline(baselineValue, currentValue):
             print("TOO Close!!")
     
     print(x+y+w+h, baselineVal)
-    return abs(1 - (x+y+w+h)/(baselineVal/3))
+    return abs(1 - (x+y+w+h)/(baselineVal))
 
 
 def detectAndDisplay(frame, baseline, currentValue, face_cascade):#main camera loop function

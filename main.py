@@ -72,6 +72,7 @@ while True:
     frame = cv.flip(frame, 1)
 
     if (len(baseline) == 0):
+        frame = cv.putText(frame, "Sit up straight and press d to start!", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
         frame = cv.putText(frame, "Sit up straight and press d to start!", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,0,0))
 
     # if baseline has been captured
@@ -89,11 +90,13 @@ while True:
         print(scores)
 
         # check for deviation
-        if sum(scores) > queuelen * 3:
+        if sum(scores) > queuelen * 5:
+            frame = cv.putText(frame, "Bad", (30,30), cv.FONT_HERSHEY_DUPLEX, 2, (255,255,255), lineType=cv.LINE_AA, thickness=2)
             frame = cv.putText(frame, "Bad", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,0,255))
             bad += 1
         else:
-            frame = cv.putText(frame, "Good", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0))
+            frame = cv.putText(frame, "Good", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
+            frame = cv.putText(frame, "Good", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0), )
             good += 1
 
     cv.imshow('MediaPipe Pose', frame)
