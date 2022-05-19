@@ -1,7 +1,7 @@
 import cv2 as cv
 import mediapipe as mp
 
-max_deviation = .10
+max_deviation = .50
 
 """
 POSE LANDMARK VALUES
