@@ -68,6 +68,12 @@ while True:
         print('--(!) No captured frame -- Break!')
         break
 
+    
+    frame = cv.flip(frame, 1)
+
+    if (len(baseline) == 0):
+        frame = cv.putText(frame, "Sit up straight and press d to start!", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,0,0))
+
     # if baseline has been captured
     if (len(baseline) > 3):
         # call face detection
@@ -84,19 +90,17 @@ while True:
 
         # check for deviation
         if sum(scores) > queuelen * 3:
-            frame = cv.putText(cv.flip(frame, 1), "Bad", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,0,255))
+            frame = cv.putText(frame, "Bad", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,0,255))
             bad += 1
         else:
-            frame = cv.putText(cv.flip(frame, 1), "Good", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0))
+            frame = cv.putText(frame, "Good", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0))
             good += 1
-    else:
-        frame = cv.flip(frame, 1)
 
     cv.imshow('MediaPipe Pose', frame)
 
     # get baseline values
     try:  # used try so that if user pressed other than the given key error will not be shown
-        if keyboard.is_pressed('D'):  # if key 'D' is pressed, capture baseline
+        if keyboard.is_pressed('d'):  # if key 'D' is pressed, capture baseline
             print('Capturing Baseline Value')
             baseline["baselineValue"] = detectAndDisplay(frame, baseline, currentValue, face_cascade)
 
@@ -110,7 +114,10 @@ while True:
 
 
     if cv.waitKey(1) & 0xFF == ord('q'):#program closes when q is pressed.
-        print("Percentage good:", good/bad)
+        try:
+            print("Percentage good:", good/(good + bad))
+        except:
+            pass
         break
 cv.destroyAllWindows()
 quit()
