@@ -6,7 +6,7 @@ slant_max = 0.06
 """
 POSE LANDMARK VALUES
 
- NOSE = 0
+  NOSE = 0
   LEFT_EYE_INNER = 1
   LEFT_EYE = 2
   LEFT_EYE_OUTER = 3
@@ -34,10 +34,17 @@ def pose_detect(frame):
     landmarklist = res.pose_landmarks # a list of landmark objects, each contains x y z
     lshoulder = landmarklist.landmark[11]
     rshoulder = landmarklist.landmark[12]
-    slant = abs(lshoulder.y - rshoulder.y)
-    print("slant" + str(slant))
+    nose = landmarklist.landmark[0]
+    middlex = (lshoulder.x + rshoulder.x) / 2
+    middley = (lshoulder.y + rshoulder.y) / 2
+    middlez = (lshoulder.z + rshoulder.z) / 2
 
-    if (slant > slant_max):
+    xslant = abs(lshoulder.y - rshoulder.y)
+    zslant = abs(nose.z - middlez)
+    yslant = abs(nose.x - middlex)
+    print("slant", str(xslant), str(yslant), str(zslant))
+
+    if (xslant > slant_max):
         print("sit straight")
     
     frame = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
