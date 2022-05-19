@@ -24,14 +24,13 @@ def comparingBaseline(baselineValue, currentValue):
             upperHigh += x
             upperLow += x
 
-        upperHigh += upperHigh*.04
-        upperLow -= upperLow*.04
+        upperHigh += upperHigh*.01
+        upperLow -= upperLow*.02
     
-        if upperHigh != baselineVal:
-            if upperHigh < baselineVal:
-                print("Too FAR!!")
-            if upperLow > baselineVal:
-                print("TOO Close!!")
+        if upperHigh < baselineVal:
+            print("Too FAR!!")
+        if upperLow > baselineVal:
+            print("TOO Close!!")
 
 
 def detectAndDisplay(frame, baselineValue, currentValue, face_cascade):#main camera loop function
