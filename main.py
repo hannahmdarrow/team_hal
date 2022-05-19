@@ -4,6 +4,9 @@ import argparse
 import keyboard
 from cascadetest import detectAndDisplay
 
+
+baselineValue = (0,0,0,0)
+
 parser = argparse.ArgumentParser(description='Code for Cascade Classifier tutorial.')
 parser.add_argument('--face_cascade', help='Path to face cascade.', default='haarcascade_frontalface_alt.xml')
 parser.add_argument('--camera', help='Camera divide number.', type=int, default=0)

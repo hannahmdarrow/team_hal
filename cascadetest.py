@@ -3,8 +3,6 @@ import cv2 as cv
 import argparse
 import keyboard
 
-baselineValue = (0,0,0,0)
-
 def comparingBaseline():
     pass
 
