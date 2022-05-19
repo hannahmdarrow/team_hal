@@ -5,7 +5,23 @@ import keyboard
 from cascadetest import detectAndDisplay
 from cascadetest import comparingBaseline
 from posetracking import pose_detect
+import tkinter as tk
 
+# Create a GUI window
+window = tk.Tk()
+greeting = tk.Label(text="Sit up straight", width=20, height=3, bg="black", fg="light blue")
+greeting.pack()
+# Ready button
+button = tk.Button(
+    text="Ready",
+    width=20,
+    height=3,
+    bg="light blue",
+    fg="black",
+    # Close the window when the ready button is pushed)
+    command=window.destroy
+).pack()
+window.mainloop()
 
 baselineValue = (0,0,0,0)
 currentValue = (0,0,0,0)
