@@ -32,8 +32,9 @@ def comparingBaseline(baselineValue, currentValue):
             print("Too FAR!!")
         if upperLow > baselineVal:
             print("TOO Close!!")
-    print("LAFD", baselineVal)
-    return abs(1 - (x+y+w+h)/baselineVal) * 10
+    
+    print(x+y+w+h, baselineVal)
+    return abs(1 - (x+y+w+h)/(baselineVal/3))
 
 
 def detectAndDisplay(frame, baseline, currentValue, face_cascade):#main camera loop function
@@ -48,10 +49,6 @@ def detectAndDisplay(frame, baseline, currentValue, face_cascade):#main camera l
         frame = cv.ellipse(frame, center, (w//2, h//2), 0, 0, 360, (255, 0, 255), 4)
         faceROI = frame_gray[y:y+h,x:x+w]
         currentValue = (x,y,h,w)
-
-    if (len(baseline) > 3):
-        # we DO NOT need to calc this every time, but need to modify some data structures to change
-        baseline_csize = baseline["baselineValue"][2] + baseline["baselineValue"][3]
     
     #cv.imshow('Capture - Face detection', frame) # this is done in main
     return currentValue
