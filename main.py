@@ -6,6 +6,7 @@ from cascadetest import detectAndDisplay
 
 
 baselineValue = (0,0,0,0)
+currentValue = (0,0,0,0)
 
 parser = argparse.ArgumentParser(description='Code for Cascade Classifier tutorial.')
 parser.add_argument('--face_cascade', help='Path to face cascade.', default='haarcascade_frontalface_alt.xml')
@@ -27,10 +28,11 @@ if not cap.isOpened:
     exit(0)
 while True:
     ret, frame = cap.read()
+    print(frame)
     if frame is None:
         print('--(!) No captured frame -- Break!')
         break
-    _, baselineValue = detectAndDisplay(frame, baselineValue)
+    _, baselineValue, currentValue = detectAndDisplay(frame, baselineValue, currentValue, face_cascade)
     if cv.waitKey(1) & 0xFF == ord('q'):#program closes when q is pressed.
         break
 cv.destroyAllWindows()

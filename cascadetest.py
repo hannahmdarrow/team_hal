@@ -9,7 +9,7 @@ def comparingBaseline(baselineValue, currentValue):
     print(currentValue)
 
 
-def detectAndDisplay(frame, baselineValue, currentValue):#main camera loop function
+def detectAndDisplay(frame, baselineValue, currentValue, face_cascade):#main camera loop function
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     frame_gray = cv.equalizeHist(frame_gray)
     
