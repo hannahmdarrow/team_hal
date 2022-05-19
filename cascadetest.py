@@ -6,7 +6,7 @@ import keyboard
 baselineValue = (0,0,0,0)
 
 def comparingBaseline():
-    
+    pass
 
 
 def detectAndDisplay(frame, baselineValue):#main camera loop function
