@@ -1,11 +1,13 @@
 from __future__ import print_function
 import cv2 as cv
 import argparse
+from cv2 import FONT_HERSHEY_DUPLEX
 import keyboard
 from cascadetest import detectAndDisplay
 from cascadetest import comparingBaseline
 from posetracking import pose_detect, pose_values
 import tkinter as tk
+from collections import deque
 
 # Create a GUI window
 window = tk.Tk()
@@ -23,18 +25,23 @@ button = tk.Button(
 ).pack()
 window.mainloop()
 
-baseline = {}
 
+# variables
+# dictionary that stores baseline values
+baseline = {}
 baselineValue = (0,0,0,0)
 currentValue = (0,0,0,0)
 
-parser = argparse.ArgumentParser(description='Code for Cascade Classifier tutorial.')
+deviation = 0
+queuelen = 10
+scores = deque(maxlen=queuelen)
+
+parser = argparse.ArgumentParser(description='posture.ly')
 parser.add_argument('--face_cascade', help='Path to face cascade.', default='haarcascade_frontalface_alt.xml')
 parser.add_argument('--camera', help='Camera divide number.', type=int, default=0)
 args = parser.parse_args()
 face_cascade_name = args.face_cascade
 face_cascade = cv.CascadeClassifier()
-
 
 #-- 1. Load the cascades
 if not face_cascade.load(cv.samples.findFile(face_cascade_name)):
@@ -59,27 +66,40 @@ while True:
         print('--(!) No captured frame -- Break!')
         break
 
-    # call face detection
-    _, baselineValue, currentValue = detectAndDisplay(frame, baselineValue, currentValue, face_cascade)
-    comparingBaseline(baselineValue, currentValue)
+    # if baseline has been captured
+    if (len(baseline) > 3):
+        # call face detection
+        currentValue = detectAndDisplay(frame, baseline, currentValue, face_cascade)
+        face_deviation = comparingBaseline(baseline["baselineValue"], currentValue)
+        print(face_deviation)
 
-    # call pose detectio
-    frame = pose_detect(frame, baseline)
+        # call pose detect
+        frame, pose_deviation = pose_detect(frame, baseline)
+        total_deviation = face_deviation + pose_deviation
+        print("HWOOWOO", face_deviation, pose_deviation)
+        scores.append(total_deviation)
+        print(scores)
 
-    cv.imshow('MediaPipe Pose', cv.flip(frame, 1))
+        # check for deviation
+        if sum(scores) > queuelen * 3:
+            frame = cv.putText(cv.flip(frame, 1), "Bad", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,0,255))
+        else:
+            frame = cv.putText(cv.flip(frame, 1), "Good", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0))
+    else:
+        frame = cv.flip(frame, 1)
+
+    cv.imshow('MediaPipe Pose', frame)
 
     # get baseline values
     try:  # used try so that if user pressed other than the given key error will not be shown
         if keyboard.is_pressed('D'):  # if key 'D' is pressed, capture baseline
             print('Capturing Baseline Value')
-            baseline["baselineValues"] = currentValue
+            baseline["baselineValue"] = detectAndDisplay(frame, baseline, currentValue, face_cascade)
 
             xs, ys, zs = pose_values(frame)
             baseline["xslant"] = xs
             baseline["yslant"] = ys
             baseline["zslant"] = zs
-
-            print(baseline, xs, ys, zs)
     except:
         pass  # if user pressed a key other than the given key the loop will break
 

@@ -48,15 +48,15 @@ def pose_values(frame, res = None):
     return xslant, yslant, zslant
 
 def pose_detect(frame, baseline):
+    deviation = 0
     res = pose.process(frame)
     # get pose results
     xslant, yslant, zslant = pose_values(frame, res)
 
     if (len(baseline) > 3):
-        if (xslant > max_deviation+baseline["xslant"] or 
-        yslant > max_deviation+baseline["yslant"] or 
-        zslant > max_deviation+baseline["zslant"]):
-            print("sit straight")
+        deviation = abs(1 - (xslant/baseline["xslant"])) +\
+                abs(1 - (yslant/baseline["yslant"])) +\
+                abs(1 - (zslant/baseline["zslant"]))
     
     frame = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
 
@@ -66,4 +66,4 @@ def pose_detect(frame, baseline):
         res.pose_landmarks,
         mp_pose.POSE_CONNECTIONS,
         landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
-    return frame
+    return frame, deviation
