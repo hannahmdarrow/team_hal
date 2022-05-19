@@ -4,7 +4,7 @@ import argparse
 import keyboard
 from cascadetest import detectAndDisplay
 from cascadetest import comparingBaseline
-from posetracking import pose_detect
+from posetracking import pose_detect, pose_values
 import tkinter as tk
 
 # Create a GUI window
@@ -23,6 +23,8 @@ button = tk.Button(
 ).pack()
 window.mainloop()
 
+baseline = {}
+
 baselineValue = (0,0,0,0)
 currentValue = (0,0,0,0)
 
@@ -38,7 +40,6 @@ face_cascade = cv.CascadeClassifier()
 if not face_cascade.load(cv.samples.findFile(face_cascade_name)):
     print('--(!)Error loading face cascade')
     exit(0)
-
 
 camera_device = args.camera # should be 0 to be device default?
 
@@ -63,9 +64,25 @@ while True:
     comparingBaseline(baselineValue, currentValue)
 
     # call pose detectio
-    frame = pose_detect(frame)
+    frame = pose_detect(frame, baseline)
 
     cv.imshow('MediaPipe Pose', cv.flip(frame, 1))
+
+    # get baseline values
+    try:  # used try so that if user pressed other than the given key error will not be shown
+        if keyboard.is_pressed('D'):  # if key 'D' is pressed, capture baseline
+            print('Capturing Baseline Value')
+            baseline["baselineValues"] = currentValue
+
+            xs, ys, zs = pose_values(frame)
+            baseline["xslant"] = xs
+            baseline["yslant"] = ys
+            baseline["zslant"] = zs
+
+            print(baseline, xs, ys, zs)
+    except:
+        pass  # if user pressed a key other than the given key the loop will break
+
 
     if cv.waitKey(1) & 0xFF == ord('q'):#program closes when q is pressed.
         break

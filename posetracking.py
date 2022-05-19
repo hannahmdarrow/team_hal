@@ -1,7 +1,7 @@
 import cv2 as cv
 import mediapipe as mp
 
-slant_max = 0.06
+max_deviation = .10
 
 """
 POSE LANDMARK VALUES
@@ -28,9 +28,11 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
-def pose_detect(frame):
-    # get pose results
-    res = pose.process(frame)
+def pose_values(frame, res = None):
+    # dont try to process if it already exists
+    if res == None:
+        res = pose.process(frame)
+
     landmarklist = res.pose_landmarks # a list of landmark objects, each contains x y z
     lshoulder = landmarklist.landmark[11]
     rshoulder = landmarklist.landmark[12]
@@ -42,10 +44,19 @@ def pose_detect(frame):
     xslant = abs(lshoulder.y - rshoulder.y)
     zslant = abs(nose.z - middlez)
     yslant = abs(nose.x - middlex)
-    print("slant", str(xslant), str(yslant), str(zslant))
 
-    if (xslant > slant_max):
-        print("sit straight")
+    return xslant, yslant, zslant
+
+def pose_detect(frame, baseline):
+    res = pose.process(frame)
+    # get pose results
+    xslant, yslant, zslant = pose_values(frame, res)
+
+    if (len(baseline) > 3):
+        if (xslant > max_deviation+baseline["xslant"] or 
+        yslant > max_deviation+baseline["yslant"] or 
+        zslant > max_deviation+baseline["zslant"]):
+            print("sit straight")
     
     frame = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
 
