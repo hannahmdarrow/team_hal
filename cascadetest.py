@@ -25,8 +25,8 @@ def comparingBaseline(baselineValue, currentValue):
     for y in baselineValue:
         baselineVal += y
 
-    upperHigh += upperHigh*.04
-    upperLow -= upperLow*.04
+    upperHigh += upperHigh*.2
+    upperLow -= upperLow*.2
     if upperHigh != baselineVal:
         if upperHigh < baselineVal:
             print("Too FAR!!")
@@ -54,5 +54,5 @@ def detectAndDisplay(frame, baselineValue, currentValue, face_cascade):#main cam
                 break  # finishing the loop
         except:
             break  # if user pressed a key other than the given key the loop will break
-    cv.imshow('Capture - Face detection', frame)
+    #cv.imshow('Capture - Face detection', frame) # this is done in main
     return None, baselineValue, currentValue

@@ -58,16 +58,14 @@ while True:
         print('--(!) No captured frame -- Break!')
         break
 
-    # mark image as read only
-    frame.flags.writeable = False
-
     # call face detection
     _, baselineValue, currentValue = detectAndDisplay(frame, baselineValue, currentValue, face_cascade)
     comparingBaseline(baselineValue, currentValue)
 
     # call pose detectio
-    _ = pose_detect(frame)
+    frame = pose_detect(frame)
 
+    cv.imshow('MediaPipe Pose', cv.flip(frame, 1))
 
     if cv.waitKey(1) & 0xFF == ord('q'):#program closes when q is pressed.
         break
