@@ -6,8 +6,27 @@ import keyboard
 baselineValue = (0,0,0,0)
 currentValue = (0,0,0,0)
 def comparingBaseline(baselineValue, currentValue):
-    print(currentValue)
+    x = currentValue[0]
+    y = currentValue[1]
+    w = currentValue[2]
+    h = currentValue[3]
 
+    #x +=x*.10
+    #y +=y*.10
+    #w +=w*.10
+    #h +=h*.10
+    upperHigh = 0
+    currentVal = 0
+    for x in currentValue:
+        upperHigh += x
+
+    for y in baselineValue:
+        currentVal += y
+
+    upperHigh += upperHigh*.01
+    
+    if upperHigh < currentVal:
+        print("Too FAR!!")
 
 def detectAndDisplay(frame, baselineValue, currentValue, face_cascade):#main camera loop function
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
@@ -25,7 +44,7 @@ def detectAndDisplay(frame, baselineValue, currentValue, face_cascade):#main cam
             if keyboard.is_pressed('D'):  # if key 'q' is pressed, capture baseline
                 print('Capturing Baseline Value')
                 baselineValue = (x,y,h,w)
-                print(baselineValue)
+                #print(baselineValue)
                 break  # finishing the loop
         except:
             break  # if user pressed a key other than the given key the loop will break

@@ -3,6 +3,7 @@ import cv2 as cv
 import argparse
 import keyboard
 from cascadetest import detectAndDisplay
+from cascadetest import comparingBaseline
 
 
 baselineValue = (0,0,0,0)
@@ -28,11 +29,13 @@ if not cap.isOpened:
     exit(0)
 while True:
     ret, frame = cap.read()
-    print(frame)
+    #print(frame)
     if frame is None:
         print('--(!) No captured frame -- Break!')
         break
     _, baselineValue, currentValue = detectAndDisplay(frame, baselineValue, currentValue, face_cascade)
+    comparingBaseline(baselineValue, currentValue)
     if cv.waitKey(1) & 0xFF == ord('q'):#program closes when q is pressed.
         break
 cv.destroyAllWindows()
+quit()
