@@ -33,7 +33,7 @@ def comparingBaseline(baselineValue, currentValue):
         if upperLow > baselineVal:
             print("TOO Close!!")
     print("LAFD", baselineVal)
-    return abs(1 - (x+y+w+h)/baselineVal)
+    return abs(1 - (x+y+w+h)/baselineVal) * 10
 
 
 def detectAndDisplay(frame, baseline, currentValue, face_cascade):#main camera loop function

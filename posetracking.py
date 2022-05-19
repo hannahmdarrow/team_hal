@@ -44,19 +44,21 @@ def pose_values(frame, res = None):
     xslant = abs(lshoulder.y - rshoulder.y)
     zslant = abs(nose.z - middlez)
     yslant = abs(nose.x - middlex)
+    slouch = nose.y - middley
 
-    return xslant, yslant, zslant
+    return xslant, yslant, zslant, slouch
 
 def pose_detect(frame, baseline):
     deviation = 0
     res = pose.process(frame)
     # get pose results
-    xslant, yslant, zslant = pose_values(frame, res)
+    xslant, yslant, zslant, slouch = pose_values(frame, res)
 
     if (len(baseline) > 3):
         deviation = abs(1 - (xslant/baseline["xslant"])) +\
                 abs(1 - (yslant/baseline["yslant"])) +\
-                abs(1 - (zslant/baseline["zslant"]))
+                abs(1 - (zslant/baseline["zslant"])) +\
+                    abs(1 - (slouch/baseline["slouch"]))
     
     frame = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
 

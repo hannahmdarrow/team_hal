@@ -36,6 +36,8 @@ deviation = 0
 queuelen = 10
 scores = deque(maxlen=queuelen)
 
+good, bad = 0, 0
+
 parser = argparse.ArgumentParser(description='posture.ly')
 parser.add_argument('--face_cascade', help='Path to face cascade.', default='haarcascade_frontalface_alt.xml')
 parser.add_argument('--camera', help='Camera divide number.', type=int, default=0)
@@ -83,8 +85,10 @@ while True:
         # check for deviation
         if sum(scores) > queuelen * 3:
             frame = cv.putText(cv.flip(frame, 1), "Bad", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,0,255))
+            bad += 1
         else:
             frame = cv.putText(cv.flip(frame, 1), "Good", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0))
+            good += 1
     else:
         frame = cv.flip(frame, 1)
 
@@ -96,15 +100,17 @@ while True:
             print('Capturing Baseline Value')
             baseline["baselineValue"] = detectAndDisplay(frame, baseline, currentValue, face_cascade)
 
-            xs, ys, zs = pose_values(frame)
+            xs, ys, zs, s = pose_values(frame)
             baseline["xslant"] = xs
             baseline["yslant"] = ys
             baseline["zslant"] = zs
+            baseline["slouch"] = s
     except:
         pass  # if user pressed a key other than the given key the loop will break
 
 
     if cv.waitKey(1) & 0xFF == ord('q'):#program closes when q is pressed.
+        print("Percentage good:", good/bad)
         break
 cv.destroyAllWindows()
 quit()
