@@ -2,8 +2,22 @@ from __future__ import print_function
 import cv2 as cv
 import argparse
 import keyboard
+import tkinter as tk
 from cascadetest import detectAndDisplay
 
+window = tk.Tk()
+greeting = tk.Label(text="Sit up straight")
+greeting.pack()
+button = tk.Button(
+    text="Ready",
+    width=20,
+    height=3,
+    bg="light blue",
+    fg="black",
+    command=window.destroy
+)
+button.pack()
+window.mainloop()
 
 # set up for face detection
 baselineValue = (0,0,0,0)
