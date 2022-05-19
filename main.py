@@ -5,9 +5,9 @@ import keyboard
 from cascadetest import detectAndDisplay
 
 
+# set up for face detection
 baselineValue = (0,0,0,0)
 currentValue = (0,0,0,0)
-
 parser = argparse.ArgumentParser(description='Code for Cascade Classifier tutorial.')
 parser.add_argument('--face_cascade', help='Path to face cascade.', default='haarcascade_frontalface_alt.xml')
 parser.add_argument('--camera', help='Camera divide number.', type=int, default=0)
@@ -19,6 +19,8 @@ face_cascade = cv.CascadeClassifier()
 if not face_cascade.load(cv.samples.findFile(face_cascade_name)):
     print('--(!)Error loading face cascade')
     exit(0)
+
+
 camera_device = args.camera
 
 #-- 2. Read the video stream
