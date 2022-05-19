@@ -4,12 +4,12 @@ import argparse
 import keyboard
 
 baselineValue = (0,0,0,0)
+currentValue = (0,0,0,0)
+def comparingBaseline(baselineValue, currentValue):
+    print(currentValue)
 
-def comparingBaseline():
-    
 
-
-def detectAndDisplay(frame, baselineValue):#main camera loop function
+def detectAndDisplay(frame, baselineValue, currentValue):#main camera loop function
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     frame_gray = cv.equalizeHist(frame_gray)
     
@@ -20,18 +20,17 @@ def detectAndDisplay(frame, baselineValue):#main camera loop function
         center = (x + w//2, y + h//2)
         frame = cv.ellipse(frame, center, (w//2, h//2), 0, 0, 360, (255, 0, 255), 4)
         faceROI = frame_gray[y:y+h,x:x+w]
-
+        currentValue = (x,y,h,w)
         try:  # used try so that if user pressed other than the given key error will not be shown
             if keyboard.is_pressed('D'):  # if key 'q' is pressed, capture baseline
                 print('Capturing Baseline Value')
                 baselineValue = (x,y,h,w)
                 print(baselineValue)
-                
                 break  # finishing the loop
         except:
             break  # if user pressed a key other than the given key the loop will break
     cv.imshow('Capture - Face detection', frame)
-    return None, baselineValue
+    return None, baselineValue, currentValue
 
 parser = argparse.ArgumentParser(description='Code for Cascade Classifier tutorial.')
 parser.add_argument('--face_cascade', help='Path to face cascade.', default='haarcascade_frontalface_alt.xml')
@@ -56,7 +55,8 @@ while True:
     if frame is None:
         print('--(!) No captured frame -- Break!')
         break
-    _, baselineValue = detectAndDisplay(frame, baselineValue)
+    _, baselineValue, currentValue = detectAndDisplay(frame, baselineValue, currentValue)
+    comparingBaseline(baselineValue, currentValue)
     if cv.waitKey(1) & 0xFF == ord('q'):#program closes when q is pressed.
         break
 cv.destroyAllWindows()
