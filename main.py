@@ -4,7 +4,6 @@ import argparse
 from cv2 import FONT_HERSHEY_DUPLEX
 import keyboard
 from cascadetest import detectAndDisplay
-from cascadetest import comparingBaseline
 from posetracking import pose_detect, pose_values
 import tkinter as tk
 from collections import deque
@@ -77,9 +76,9 @@ while True:
 
     # if baseline has been captured
     if (len(baseline) > 3):
+        print("WOWO")
         # call face detection
-        currentValue = detectAndDisplay(frame, baseline, currentValue, face_cascade)
-        face_deviation = comparingBaseline(baseline["baselineValue"], currentValue)
+        currentValue, face_deviation = detectAndDisplay(frame, baseline, currentValue, face_cascade)
         print(face_deviation)
 
         # call pose detect
@@ -105,13 +104,14 @@ while True:
     try:  # used try so that if user pressed other than the given key error will not be shown
         if keyboard.is_pressed('d'):  # if key 'D' is pressed, capture baseline
             print('Capturing Baseline Value')
-            baseline["baselineValue"] = detectAndDisplay(frame, baseline, currentValue, face_cascade)
-            _,
+            baseline["baselineValue"], _ = detectAndDisplay(frame, baseline, currentValue, face_cascade)
+            print("HEY")
             xs, ys, zs, s = pose_values(frame)
             baseline["xslant"] = xs
             baseline["yslant"] = ys
             baseline["zslant"] = zs
             baseline["slouch"] = s
+        
     except:
         pass  # if user pressed a key other than the given key the loop will break
 

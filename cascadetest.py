@@ -6,35 +6,6 @@ import keyboard
 
 baselineValue = (0,0,0,0)
 currentValue = (0,0,0,0)
-def comparingBaseline(baselineValue, currentValue):
-    x = currentValue[0]
-    y = currentValue[1]
-    w = currentValue[2]
-    h = currentValue[3]
-
-    upperHigh = 0 #establishing too far threshold
-    #upperLow = 0#too close threshold
-    baselineVal = 0
-    currentVal = 0#what is coming live from the feed
-    
-    for z in baselineValue:#turning baseline tuple into a numerical value
-        baselineVal += z
-
-    if baselineVal != 0:
-        for x in currentValue:
-            upperHigh += x
-         #   upperLow += x
-
-        upperHigh += upperHigh*.01
-        #upperLow -= upperLow*.02
-    
-        if upperHigh < baselineVal:
-            print("Too FAR!!")
-        #if upperLow > baselineVal:
-            #print("TOO Close!!")
-    
-    print(x+y+w+h, baselineVal)
-    return abs(1 - (x+y+w+h)/(baselineVal))
 
 
 def detectAndDisplay(frame, baseline, currentValue, face_cascade):#main camera loop function
@@ -49,6 +20,35 @@ def detectAndDisplay(frame, baseline, currentValue, face_cascade):#main camera l
         frame = cv.ellipse(frame, center, (w//2, h//2), 0, 0, 360, (255, 0, 255), 4)
         faceROI = frame_gray[y:y+h,x:x+w]
         currentValue = (x,y,h,w)
-    
+      
+    upperHigh = 0 #establishing too far threshold
+    upperLow = 0#too close threshold
+    baselineVal = 0
+
+    if (len(baseline) > 3):
+        
+        for z in baseline["baselineValue"]:#turning baseline tuple into a numerical value
+            baselineVal += z
+
+        if baselineVal != 0:
+            for x in currentValue:
+                upperHigh += x
+                upperLow += x
+
+            upperHigh += upperHigh*.05
+            upperLow -= upperLow*.05
+        
+            if upperHigh < baselineVal:
+                print("Too FAR!!")
+                frame = cv.putText(frame, "Too FAR!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
+                frame = cv.putText(frame, "Too FAR!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0), )
+            if upperLow > baselineVal:
+                print("TOO Close!!")
+                frame = cv.putText(frame, "Too FAR!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
+                frame = cv.putText(frame, "Too FAR!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0), )
+        
+        print(x+y+w+h, baselineVal)
+
+
     #cv.imshow('Capture - Face detection', frame) # this is done in main
-    return currentValue
+    return currentValue, abs(1 - (x+y+w+h)/(baselineVal))
