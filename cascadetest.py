@@ -1,5 +1,6 @@
 from __future__ import print_function
 from cmath import pi
+from inspect import currentframe
 import cv2 as cv
 import argparse
 import keyboard
@@ -42,11 +43,13 @@ def detectAndDisplay(frame, baseline, currentValue, face_cascade):#main camera l
                 print("Too FAR!!")
                 frame = cv.putText(frame, "Too FAR!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
                 frame = cv.putText(frame, "Too FAR!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0), )
+                return currentValue, 2
             if upperLow > baselineVal:
                 print("TOO Close!!")
                 frame = cv.putText(frame, "Too CLOSE!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
                 frame = cv.putText(frame, "Too CLOSE!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0), )
+                return currentValue, 2
 
 
     #cv.imshow('Capture - Face detection', frame) # this is done in main
-    return currentValue, abs(1 - sum(list(currentValue))/(baselineVal))
+    return currentValue, 0 #abs(1 - sum(list(currentValue))/(baselineVal))

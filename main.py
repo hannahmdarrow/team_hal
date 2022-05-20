@@ -89,7 +89,7 @@ while True:
         print(scores)
 
         # check for deviation
-        if sum(scores) > queuelen * 5:
+        if sum(scores) > queuelen * 4:
             frame = cv.putText(frame, "Bad", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
             frame = cv.putText(frame, "Bad", (30,30), cv.FONT_HERSHEY_DUPLEX, 1, (0,0,255))
             bad += 1
