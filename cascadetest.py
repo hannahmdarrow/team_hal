@@ -44,8 +44,8 @@ def detectAndDisplay(frame, baseline, currentValue, face_cascade):#main camera l
                 frame = cv.putText(frame, "Too FAR!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0), )
             if upperLow > baselineVal:
                 print("TOO Close!!")
-                frame = cv.putText(frame, "Too FAR!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
-                frame = cv.putText(frame, "Too FAR!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0), )
+                frame = cv.putText(frame, "Too CLOSE!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
+                frame = cv.putText(frame, "Too CLOSE!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0), )
         
         print(x+y+w+h, baselineVal)
 
