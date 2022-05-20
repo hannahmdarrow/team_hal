@@ -13,7 +13,7 @@ def comparingBaseline(baselineValue, currentValue):
     h = currentValue[3]
 
     upperHigh = 0 #establishing too far threshold
-    upperLow = 0#too close threshold
+    #upperLow = 0#too close threshold
     baselineVal = 0
     currentVal = 0#what is coming live from the feed
     
@@ -23,15 +23,15 @@ def comparingBaseline(baselineValue, currentValue):
     if baselineVal != 0:
         for x in currentValue:
             upperHigh += x
-            upperLow += x
+         #   upperLow += x
 
         upperHigh += upperHigh*.01
-        upperLow -= upperLow*.02
+        #upperLow -= upperLow*.02
     
         if upperHigh < baselineVal:
             print("Too FAR!!")
-        if upperLow > baselineVal:
-            print("TOO Close!!")
+        #if upperLow > baselineVal:
+            #print("TOO Close!!")
     
     print(x+y+w+h, baselineVal)
     return abs(1 - (x+y+w+h)/(baselineVal))

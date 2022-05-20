@@ -10,20 +10,20 @@ import tkinter as tk
 from collections import deque
 
 # Create a GUI window
-window = tk.Tk()
-greeting = tk.Label(text="Sit up straight", width=20, height=3, bg="black", fg="light blue")
-greeting.pack()
+#window = tk.Tk()
+#greeting = tk.Label(text="Sit up straight", width=20, height=3, bg="black", fg="light blue")
+#greeting.pack()
 # Ready button
-button = tk.Button(
-    text="Ready",
-    width=20,
-    height=3,
-    bg="light blue",
-    fg="black",
+#button = tk.Button(
+#    text="Ready",
+#    width=20,
+#    height=3,
+#    bg="light blue",
+#    fg="black",
     # Close the window when the ready button is pushed)
-    command=window.destroy
-).pack()
-window.mainloop()
+#    command=window.destroy
+#).pack()
+#window.mainloop()
 
 
 # variables
@@ -106,7 +106,7 @@ while True:
         if keyboard.is_pressed('d'):  # if key 'D' is pressed, capture baseline
             print('Capturing Baseline Value')
             baseline["baselineValue"] = detectAndDisplay(frame, baseline, currentValue, face_cascade)
-
+            _,
             xs, ys, zs, s = pose_values(frame)
             baseline["xslant"] = xs
             baseline["yslant"] = ys
