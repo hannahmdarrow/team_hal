@@ -55,10 +55,10 @@ def pose_detect(frame, baseline):
     xslant, yslant, zslant, slouch = pose_values(frame, res)
 
     if (len(baseline) > 3):
-        deviation = xslant/baseline["xslant"]+\
-                yslant/baseline["yslant"] +\
-                    (zslant/baseline["zslant"]) +\
-                    (slouch/baseline["slouch"])
+        deviation = abs(1 - (xslant/baseline["xslant"])) +\
+                abs(1 - (yslant/baseline["yslant"])) +\
+                abs(1 - (zslant/baseline["zslant"])) +\
+                    abs(1 - (slouch/baseline["slouch"]))
     
     frame = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
 

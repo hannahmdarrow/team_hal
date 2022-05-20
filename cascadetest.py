@@ -46,9 +46,7 @@ def detectAndDisplay(frame, baseline, currentValue, face_cascade):#main camera l
                 print("TOO Close!!")
                 frame = cv.putText(frame, "Too CLOSE!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (255,255,255), lineType=cv.LINE_AA, thickness=2)
                 frame = cv.putText(frame, "Too CLOSE!!", (30,70), cv.FONT_HERSHEY_DUPLEX, 1, (0,255,0), )
-        
-        print(x+y+w+h, baselineVal)
 
 
     #cv.imshow('Capture - Face detection', frame) # this is done in main
-    return currentValue, abs(1 - (x+y+w+h)/(baselineVal))
+    return currentValue, abs(1 - sum(list(currentValue))/(baselineVal))
